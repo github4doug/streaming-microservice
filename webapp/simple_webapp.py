@@ -1,5 +1,8 @@
-from flask import Flask, session
-from checker import check_logged_in
+from flask import Flask, render_template, jsonify
+import datetime
+import random
+import os
+import json
 
 app = Flask(__name__)
 app.secret_key = 'youwillneverguess'
@@ -8,37 +11,28 @@ app.secret_key = 'youwillneverguess'
 def hello() -> str:
     return 'hello from the simple webapp'
 
-@app.route('/page1')
-@check_logged_in
-def page1() -> str:
-    return 'page1'
+@app.route('/data')
+def getData() -> str:
+    jsonData = loadData()
+    return jsonData
 
-@app.route('/page2')
-@check_logged_in
-def page2() -> str:
-    return 'page2'
 
-@app.route('/page3')
-@check_logged_in
-def page3() -> str:
-    return 'page3'
+@app.route('/visualize')
+def visualize() -> 'html':
+    return render_template('visualize.html',the_title='Visualize Realtime Streaming Data from Redis in-memory cache')
 
-@app.route('/login')
-def do_login() -> str:
-    session['logged_in'] = True
-    return 'You are now logged in'
+def loadData():
+    # stubbed out TBD retrieve from redis
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    datafile = "testdata.json"
+    json_url = os.path.join(SITE_ROOT, "static/data", datafile)
+    data = json.load(open(json_url))
+    tempMassageData(data)
+    return jsonify(data)
 
-@app.route('/logout')
-def do_logout() -> str:
-    session.pop('logged_in', None)
-    return 'You are now logged out'
-
-@app.route('/status')
-def check_status() -> str:
-    if ('logged_in' in session):
-        return 'You are currently logged in'
-    else:
-        return 'You are NOT logged in'
+def tempMassageData(data):
+    for d in data:
+        d['count'] += random.randint(0,5)
 
 if __name__ == '__main__':
     app.run(debug=True)
