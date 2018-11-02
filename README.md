@@ -1,11 +1,11 @@
 # Streaming Microservice using AWS Kinesis, AWS Lambda, Redis, Python KCL, and D3.js
-[See latest build](http://spring-petclinic-devops-dev.us-east-1.elasticbeanstalk.com)
+[See latest build](http://50.16.95.183/visualize)
 
 ## Streaming Microservice
 - Clickstream Producer raw events ingested by AWS Kinesis stream
 - Python Lambda Consumer processes Kinesis stream and stores cleaned data into Elasticache Redis
 - Python webapp prepares realtime visualization response data from in-memory Elasticache Redis
-- User views realtime D3.js visualization fed by websocket connection to webapp
+- User views realtime D3.js visualization fed by connection to webapp
 
 <img alt="streaming-microservices" src="https://github4doug.github.io/img/PortfolioDiagram-StreamingMicroservice.png">
 
